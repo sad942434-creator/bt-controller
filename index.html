@@ -34,7 +34,6 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: system-ui, -apple-system, sans-serif;
-            width: 100vw;
             height: 100vh;
             height: 100dvh;
             display: flex;
@@ -52,10 +51,9 @@
             border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 2px;
             height: 32px;
-            width: 100%;
         }
 
-        .status { font-size: 11px; font-weight: bold; color: #888; white-space: nowrap; }
+        .status { font-size: 11px; font-weight: bold; color: #888; }
         .status.connected { color: var(--primary); }
 
         .btn-connect {
@@ -67,7 +65,6 @@
             font-size: 10px;
             font-weight: bold;
             cursor: pointer;
-            white-space: nowrap;
         }
 
         main {
@@ -76,7 +73,6 @@
             gap: 2px;
             flex: 1;
             min-height: 0;
-            width: 100%;
         }
 
         .panel {
@@ -88,7 +84,6 @@
             gap: 2px;
             border: 1px solid rgba(255,255,255,0.05);
             height: 100%;
-            min-width: 0;
         }
 
         .panel-title {
@@ -98,7 +93,6 @@
             text-align: center;
             font-weight: bold;
             height: 14px;
-            line-height: 14px;
         }
 
         .btn {
@@ -159,8 +153,8 @@
 
     <header>
         <div id="status" class="status">🔴 غير متصل</div>
-        <div style="display: flex; align-items: center; gap: 4px;">
-            <button class="btn-connect" onclick="toggleFullscreen()" style="background: var(--accent); color: #fff;">⤢ ملء الشاشة</button>
+        <div>
+            <button class="btn-connect" onclick="toggleFullscreen()" style="background: var(--accent); color: #fff; margin-left: 4px;">⤢ ملء الشاشة</button>
             <select id="themeSelect" onchange="changeTheme(this.value)">
                 <option value="neon-red">🔥 Cyber Red</option>
                 <option value="cyberpunk">🌃 Cyberpunk</option>
@@ -233,7 +227,7 @@
             </div>
         </div>
 
-        <!-- Panel 4: D-Pad & Navigation -->
+        <!-- Panel 4: D-Pad & Navigation (Reversed Horizontal Controls) -->
         <div class="panel">
             <div class="panel-title">🕹️ الأسهم والتنقل</div>
             <div class="dpad-container">
