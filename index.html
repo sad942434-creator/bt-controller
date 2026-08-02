@@ -1,474 +1,308 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ultimate PC Remote</title>
-    <style>
-        :root {
-            --bg-color: #0b0c10;
-            --panel-bg: #1f2833;
-            --primary: #66fcf1;
-            --accent: #ff0055;
-            --text-color: #ffffff;
-            --btn-bg: #121820;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ultimate PC Remote</title>
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --panel-bg: #1f2833;
+            --primary: #66fcf1;
+            --accent: #ff0055;
+            --text-color: #ffffff;
+            --btn-bg: #121820;
+        }
 
-        [data-theme="neon-red"] {
-            --bg-color: #1a0005; --panel-bg: #2d000a; --primary: #ff0055; --accent: #ff5500; --btn-bg: #40000f;
-        }
-        [data-theme="purple-haze"] {
-            --bg-color: #0f051d; --panel-bg: #1c0b36; --primary: #b026ff; --accent: #00f0ff; --btn-bg: #2a124e;
-        }
+        [data-theme="neon-red"] {
+            --bg-color: #1a0005; --panel-bg: #2d000a; --primary: #ff0055; --accent: #ff5500; --btn-bg: #40000f;
+        }
+        [data-theme="purple-haze"] {
+            --bg-color: #0f051d; --panel-bg: #1c0b36; --primary: #b026ff; --accent: #00f0ff; --btn-bg: #2a124e;
+        }
 
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-        }
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
 
-        body {
-            margin: 0;
-            padding: 2px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: system-ui, -apple-system, sans-serif;
-            height: 100vh;
-            height: 100dvh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+        body {
+            margin: 0;
+            padding: 2px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: system-ui, -apple-system, sans-serif;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--panel-bg);
-            padding: 2px 8px;
-            border-radius: 4px;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 2px;
-            height: 32px;
-        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2px;
+            height: 32px;
+        }
 
-        .status { font-size: 11px; font-weight: bold; color: #888; }
-        .status.connected { color: var(--primary); }
+        .status { font-size: 11px; font-weight: bold; color: #888; }
+        .status.connected { color: var(--primary); }
 
-        .btn-connect {
-            background: var(--primary);
-            color: #000;
-            border: none;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .btn-connect {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-        /* نظام التبديل بين الواجهات */
-        .view-section {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-height: 0;
-        }
-        .hidden { display: none !important; }
+        main {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            flex: 1;
+            min-height: 0;
+        }
 
-        main {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2px;
-            flex: 1;
-            min-height: 0;
-        }
+        .panel {
+            background: var(--panel-bg);
+            border-radius: 4px;
+            padding: 2px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            border: 1px solid rgba(255,255,255,0.05);
+            height: 100%;
+        }
 
-        .panel {
-            background: var(--panel-bg);
-            border-radius: 4px;
-            padding: 2px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            border: 1px solid rgba(255,255,255,0.05);
-            height: 100%;
-        }
+        .panel-title {
+            font-size: 9px;
+            color: var(--primary);
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: bold;
+            height: 14px;
+        }
 
-        .panel-title {
-            font-size: 9px;
-            color: var(--primary);
-            text-transform: uppercase;
-            text-align: center;
-            font-weight: bold;
-            height: 14px;
-        }
+        .btn {
+            background: var(--btn-bg);
+            color: var(--text-color);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex: 1;
+            width: 100%;
+            transition: transform 0.05s ease;
+        }
 
-        .btn {
-            background: var(--btn-bg);
-            color: var(--text-color);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex: 1;
-            width: 100%;
-            transition: transform 0.05s ease;
-        }
+        .btn:active {
+            transform: scale(0.96);
+            background: var(--primary);
+            color: #000;
+        }
 
-        .btn:active {
-            transform: scale(0.96);
-            background: var(--primary);
-            color: #000;
-        }
+        .btn-danger { border-color: var(--accent); color: var(--accent); }
+        .btn-danger:active { background: var(--accent); color: #fff; }
 
-        .btn-danger { border-color: var(--accent); color: var(--accent); }
-        .btn-danger:active { background: var(--accent); color: #fff; }
+        .dpad-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 2px;
+        }
 
-        /* واجهة الماوس والتاتش باد الخارجية */
-        .mouse-view, .keyboard-view {
-            background: var(--panel-bg);
-            border-radius: 4px;
-            padding: 5px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
+        .dpad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            flex: 2;
+            direction: ltr;
+        }
+        .dpad .empty { background: transparent; border: none; box-shadow: none; pointer-events: none; }
 
-        .touchpad-area {
-            flex: 1;
-            background: #121820;
-            border: 2px dashed var(--primary);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: var(--primary);
-            font-weight: bold;
-            touch-action: none;
-        }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; flex: 1; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; flex: 1; }
 
-        /* الكيبورد على الشاشة */
-        .keyboard-container {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            gap: 4px;
-            justify-content: center;
-        }
-        .kb-row {
-            display: flex;
-            gap: 4px;
-            flex: 1;
-        }
-        .kb-btn {
-            background: var(--btn-bg);
-            color: var(--text-color);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 4px;
-            flex: 1;
-            font-size: 14px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        .kb-btn:active { background: var(--primary); color: #000; }
-
-        .dpad-container {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            gap: 2px;
-        }
-
-        .dpad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            flex: 2;
-            direction: ltr;
-        }
-        .dpad .empty { background: transparent; border: none; box-shadow: none; pointer-events: none; }
-
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; flex: 1; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; flex: 1; }
-
-        select {
-            background: var(--btn-bg);
-            color: var(--text-color);
-            border: 1px solid var(--primary);
-            padding: 2px;
-            border-radius: 4px;
-            font-size: 10px;
-        }
-    </style>
+        select {
+            background: var(--btn-bg);
+            color: var(--text-color);
+            border: 1px solid var(--primary);
+            padding: 2px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <div id="status" class="status">🔴 غير متصل</div>
-        <div>
-            <!-- أزرار الانتقال للواجهات الخارجية الجديدة -->
-            <button class="btn-connect" onclick="switchView('mouse')" style="background: #22d3ee; color: #000;">🖱️ الماوس</button>
-            <button class="btn-connect" onclick="switchView('keyboard')" style="background: #a855f7; color: #fff;">⌨️ الكيبورد</button>
-            <button class="btn-connect" onclick="toggleFullscreen()" style="background: var(--accent); color: #fff; margin-left: 4px;">⤢</button>
-            <select id="themeSelect" onchange="changeTheme(this.value)">
-                <option value="neon-red">🔥 Cyber Red</option>
-                <option value="cyberpunk">🌃 Cyberpunk</option>
-                <option value="purple-haze">🔮 Purple Haze</option>
-            </select>
-            <button class="btn-connect" onclick="connectBT()">🔗 اتصال</button>
-        </div>
-    </header>
+    <header>
+        <div id="status" class="status">🔴 غير متصل</div>
+        <div>
+            <button class="btn-connect" onclick="toggleFullscreen()" style="background: var(--accent); color: #fff; margin-left: 4px;">⤢ ملء الشاشة</button>
+            <select id="themeSelect" onchange="changeTheme(this.value)">
+                <option value="neon-red">🔥 Cyber Red</option>
+                <option value="cyberpunk">🌃 Cyberpunk</option>
+                <option value="purple-haze">🔮 Purple Haze</option>
+            </select>
+            <button class="btn-connect" onclick="connectBT()">🔗 اتصال</button>
+        </div>
+    </header>
 
-    <!-- 1. الواجهة الرئيسية الأصلية -->
-    <div id="mainView" class="view-section">
-        <main>
-            <!-- Panel 1: System & Power -->
-            <div class="panel">
-                <div class="panel-title">🚀 تطبيقات والنظام</div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('CALC')">🧮 حاسبة</button>
-                    <button class="btn" onclick="send('NOTEPAD')">📝 مفكرة</button>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('EXPLORER')">📁 الملفات</button>
-                    <button class="btn" onclick="send('TASK_MGR')">⚙️ المهام</button>
-                </div>
-                <button class="btn" onclick="send('BROWSER')">🌐 المتصفح</button>
-                <div class="grid-3">
-                    <button class="btn btn-danger" onclick="send('LOCK')">🔒 قفل</button>
-                    <button class="btn btn-danger" onclick="send('SLEEP')">🌙 سليب</button>
-                    <button class="btn btn-danger" onclick="send('SHUTDOWN')">⚡ إيقاف</button>
-                </div>
-            </div>
+    <main>
+        <!-- Panel 1: System & Power -->
+        <div class="panel">
+            <div class="panel-title">🚀 تطبيقات والنظام</div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('CALC')">🧮 حاسبة</button>
+                <button class="btn" onclick="send('NOTEPAD')">📝 مفكرة</button>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('EXPLORER')">📁 الملفات</button>
+                <button class="btn" onclick="send('TASK_MGR')">⚙️ المهام</button>
+            </div>
+            <button class="btn" onclick="send('BROWSER')">🌐 المتصفح</button>
+            <div class="grid-3">
+                <button class="btn btn-danger" onclick="send('LOCK')">🔒 قفل</button>
+                <button class="btn btn-danger" onclick="send('SLEEP')">🌙 سليب</button>
+                <button class="btn btn-danger" onclick="send('SHUTDOWN')">⚡ إيقاف</button>
+            </div>
+        </div>
 
-            <!-- Panel 2: Shortcuts & Edit -->
-            <div class="panel">
-                <div class="panel-title">✂️ اختصارات وسريعات</div>
-                <div class="grid-3">
-                    <button class="btn" onclick="send('COPY')">📋 نسخ</button>
-                    <button class="btn" onclick="send('PASTE')">📌 لصق</button>
-                    <button class="btn" onclick="send('UNDO')">↩️ تراجع</button>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('ALT_TAB')">🔄 Alt+Tab</button>
-                    <button class="btn" onclick="send('SHOW_DESKTOP')">🖥️ سطح المكتب</button>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('SNIP_TOOL')">📸 لقطة شاشة</button>
-                    <button class="btn btn-danger" onclick="send('CLOSE_WINDOW')">❌ إغلاق النافذة</button>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('F5')">🔄 F5 تحديث</button>
-                    <button class="btn" onclick="send('F11')">⤢ F11 شاشة كاملة</button>
-                </div>
-            </div>
+        <!-- Panel 2: Shortcuts & Edit -->
+        <div class="panel">
+            <div class="panel-title">✂️ اختصارات وسريعات</div>
+            <div class="grid-3">
+                <button class="btn" onclick="send('COPY')">📋 نسخ</button>
+                <button class="btn" onclick="send('PASTE')">📌 لصق</button>
+                <button class="btn" onclick="send('UNDO')">↩️ تراجع</button>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('ALT_TAB')">🔄 Alt+Tab</button>
+                <button class="btn" onclick="send('SHOW_DESKTOP')">🖥️ سطح المكتب</button>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('SNIP_TOOL')">📸 لقطة شاشة</button>
+                <button class="btn btn-danger" onclick="send('CLOSE_WINDOW')">❌ إغلاق النافذة</button>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('F5')">🔄 F5 تحديث</button>
+                <button class="btn" onclick="send('F11')">⤢ F11 شاشة كاملة</button>
+            </div>
+        </div>
 
-            <!-- Panel 3: Media & Quick Sites -->
-            <div class="panel">
-                <div class="panel-title">🎵 الميديا والتسليّة</div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('VOL_UP')">🔊 صوت +</button>
-                    <button class="btn" onclick="send('VOL_DOWN')">🔉 صوت -</button>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('MUTE')">🔇 كتم</button>
-                    <button class="btn" onclick="send('PLAY_PAUSE')">⏯️ تشغيل</button>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('PREV_TRACK')">⏮️ السابق</button>
-                    <button class="btn" onclick="send('NEXT_TRACK')">⏭️ التالي</button>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('YOUTUBE')">▶️ YouTube</button>
-                    <button class="btn" onclick="send('SPOTIFY')">🎧 Spotify</button>
-                </div>
-            </div>
+        <!-- Panel 3: Media & Quick Sites -->
+        <div class="panel">
+            <div class="panel-title">🎵 الميديا والتسليّة</div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('VOL_UP')">🔊 صوت +</button>
+                <button class="btn" onclick="send('VOL_DOWN')">🔉 صوت -</button>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('MUTE')">🔇 كتم</button>
+                <button class="btn" onclick="send('PLAY_PAUSE')">⏯️ تشغيل</button>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('PREV_TRACK')">⏮️ السابق</button>
+                <button class="btn" onclick="send('NEXT_TRACK')">⏭️ التالي</button>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('YOUTUBE')">▶️ YouTube</button>
+                <button class="btn" onclick="send('SPOTIFY')">🎧 Spotify</button>
+            </div>
+        </div>
 
-            <!-- Panel 4: D-Pad & Navigation -->
-            <div class="panel">
-                <div class="panel-title">🕹️ الأسهم والتنقل</div>
-                <div class="dpad-container">
-                    <div class="dpad">
-                        <button class="btn empty"></button>
-                        <button class="btn" onclick="send('KEY_UP')">▲</button>
-                        <button class="btn empty"></button>
-                        
-                        <button class="btn" onclick="send('KEY_RIGHT')">►</button>
-                        <button class="btn" onclick="send('ENTER')">OK</button>
-                        <button class="btn" onclick="send('KEY_LEFT')">◄</button>
-                        
-                        <button class="btn empty"></button>
-                        <button class="btn" onclick="send('KEY_DOWN')">▼</button>
-                        <button class="btn empty"></button>
-                    </div>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('ESC')">ESC</button>
-                    <button class="btn" onclick="send('BACKSPACE')">⌫ مسح</button>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('PG_UP')">⇞ PgUp</button>
-                    <button class="btn" onclick="send('PG_DN')">⇟ PgDn</button>
-                </div>
-                <div class="grid-2">
-                    <button class="btn" onclick="send('HOME')">↖ Home</button>
-                    <button class="btn" onclick="send('END')">↘ End</button>
-                </div>
-            </div>
-        </main>
-    </div>
+        <!-- Panel 4: D-Pad & Navigation (Reversed Horizontal Controls) -->
+        <div class="panel">
+            <div class="panel-title">🕹️ الأسهم والتنقل</div>
+            <div class="dpad-container">
+                <div class="dpad">
+                    <button class="btn empty"></button>
+                    <button class="btn" onclick="send('KEY_UP')">▲</button>
+                    <button class="btn empty"></button>
+                    
+                    <button class="btn" onclick="send('KEY_RIGHT')">►</button>
+                    <button class="btn" onclick="send('ENTER')">OK</button>
+                    <button class="btn" onclick="send('KEY_LEFT')">◄</button>
+                    
+                    <button class="btn empty"></button>
+                    <button class="btn" onclick="send('KEY_DOWN')">▼</button>
+                    <button class="btn empty"></button>
+                </div>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('ESC')">ESC</button>
+                <button class="btn" onclick="send('BACKSPACE')">⌫ مسح</button>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('PG_UP')">⇞ PgUp</button>
+                <button class="btn" onclick="send('PG_DN')">⇟ PgDn</button>
+            </div>
+            <div class="grid-2">
+                <button class="btn" onclick="send('HOME')">↖ Home</button>
+                <button class="btn" onclick="send('END')">↘ End</button>
+            </div>
+        </div>
+    </main>
 
-    <!-- 2. واجهة الماوس والتاتش باد الخارجية -->
-    <div id="mouseView" class="view-section hidden">
-        <div class="mouse-view">
-            <div class="panel-title" style="font-size: 13px;">🖱️ واجهة الماوس والتحكم باللمس</div>
-            <div id="touchpad" class="touchpad-area">اسحب إصبعك هنا لتحريك مؤشر الماوس</div>
-            <div class="grid-2" style="height: 50px;">
-                <button class="btn" onclick="send('MOUSE_LEFT')">👈 كليك يمين / يسار (يسار)</button>
-                <button class="btn" onclick="send('MOUSE_RIGHT')">👉 كليك يمين</button>
-            </div>
-            <button class="btn" onclick="switchView('main')" style="background: var(--accent); color: #fff; height: 40px;">🔙 العودة للرئيسية</button>
-        </div>
-    </div>
+    <script>
+        const SERVICE_UUID = "0000ffe0-0000-1000-8000-00805f9b34fb";
+        const CHAR_UUID    = "0000ffe1-0000-1000-8000-00805f9b34fb";
+        let btChar = null;
 
-    <!-- 3. واجهة الكيبورد المخصصة على الشاشة -->
-    <div id="keyboardView" class="view-section hidden">
-        <div class="keyboard-view">
-            <div class="panel-title" style="font-size: 13px;">⌨️ لوحة المفاتيح الافتراضية</div>
-            <div class="keyboard-container">
-                <div class="kb-row">
-                    <button class="kb-btn" onclick="send('KEY_Q')">Q</button>
-                    <button class="kb-btn" onclick="send('KEY_W')">W</button>
-                    <button class="kb-btn" onclick="send('KEY_E')">E</button>
-                    <button class="kb-btn" onclick="send('KEY_R')">R</button>
-                    <button class="kb-btn" onclick="send('KEY_T')">T</button>
-                    <button class="kb-btn" onclick="send('KEY_Y')">Y</button>
-                    <button class="kb-btn" onclick="send('KEY_U')">U</button>
-                    <button class="kb-btn" onclick="send('KEY_I')">I</button>
-                    <button class="kb-btn" onclick="send('KEY_O')">O</button>
-                    <button class="kb-btn" onclick="send('KEY_P')">P</button>
-                </div>
-                <div class="kb-row">
-                    <button class="kb-btn" onclick="send('KEY_A')">A</button>
-                    <button class="kb-btn" onclick="send('KEY_S')">S</button>
-                    <button class="kb-btn" onclick="send('KEY_D')">D</button>
-                    <button class="kb-btn" onclick="send('KEY_F')">F</button>
-                    <button class="kb-btn" onclick="send('KEY_G')">G</button>
-                    <button class="kb-btn" onclick="send('KEY_H')">H</button>
-                    <button class="kb-btn" onclick="send('KEY_J')">J</button>
-                    <button class="kb-btn" onclick="send('KEY_K')">K</button>
-                    <button class="kb-btn" onclick="send('KEY_L')">L</button>
-                </div>
-                <div class="kb-row">
-                    <button class="kb-btn" onclick="send('KEY_Z')">Z</button>
-                    <button class="kb-btn" onclick="send('KEY_X')">X</button>
-                    <button class="kb-btn" onclick="send('KEY_C')">C</button>
-                    <button class="kb-btn" onclick="send('KEY_V')">V</button>
-                    <button class="kb-btn" onclick="send('KEY_B')">B</button>
-                    <button class="kb-btn" onclick="send('KEY_N')">N</button>
-                    <button class="kb-btn" onclick="send('KEY_M')">M</button>
-                    <button class="kb-btn" onclick="send('BACKSPACE')">⌫ مسح</button>
-                </div>
-                <div class="kb-row">
-                    <button class="kb-btn" onclick="send('SPACE')" style="flex: 3;">مسافة (Space)</button>
-                    <button class="kb-btn" onclick="send('ENTER')" style="flex: 1; background: var(--primary); color: #000;">Enter</button>
-                </div>
-            </div>
-            <button class="btn" onclick="switchView('main')" style="background: var(--accent); color: #fff; height: 40px;">🔙 العودة للرئيسية</button>
-        </div>
-    </div>
+        async function connectBT() {
+            try {
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: [SERVICE_UUID] }]
+                });
+                const server = await device.gatt.connect();
+                const service = await server.getPrimaryService(SERVICE_UUID);
+                btChar = await service.getCharacteristic(CHAR_UUID);
+                
+                document.getElementById('status').innerText = "🟢 متصل!";
+                document.getElementById('status').classList.add('connected');
+            } catch (err) {
+                alert("فشل الاتصال: " + err);
+            }
+        }
 
-    <script>
-        const SERVICE_UUID = "0000ffe0-0000-1000-8000-00805f9b34fb";
-        const CHAR_UUID    = "0000ffe1-0000-1000-8000-00805f9b34fb";
-        let btChar = null;
+        function send(cmd) {
+            if (navigator.vibrate) navigator.vibrate(30);
+            if (!btChar) return;
+            const encoder = new TextEncoder();
+            btChar.writeValueWithoutResponse(encoder.encode(cmd + "\n"));
+        }
 
-        async function connectBT() {
-            try {
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [{ services: [SERVICE_UUID] }]
-                });
-                const server = await device.gatt.connect();
-                const service = await server.getPrimaryService(SERVICE_UUID);
-                btChar = await service.getCharacteristic(CHAR_UUID);
-                
-                document.getElementById('status').innerText = "🟢 متصل!";
-                document.getElementById('status').classList.add('connected');
-            } catch (err) {
-                alert("فشل الاتصال: " + err);
-            }
-        }
+        function changeTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
 
-        function send(cmd) {
-            if (navigator.vibrate) navigator.vibrate(30);
-            if (!btChar) return;
-            const encoder = new TextEncoder();
-            btChar.writeValueWithoutResponse(encoder.encode(cmd + "\n"));
-        }
-
-        // دالة التنقل بين الواجهات
-        function switchView(viewName) {
-            document.getElementById('mainView').classList.add('hidden');
-            document.getElementById('mouseView').classList.add('hidden');
-            document.getElementById('keyboardView').classList.add('hidden');
-
-            if (viewName === 'mouse') {
-                document.getElementById('mouseView').classList.remove('hidden');
-            } else if (viewName === 'keyboard') {
-                document.getElementById('keyboardView').classList.remove('hidden');
-            } else {
-                document.getElementById('mainView').classList.remove('hidden');
-            }
-        }
-
-        // حركة التاتش باد للماوس
-        const touchpad = document.getElementById('touchpad');
-        let startX = 0, startY = 0;
-        
-        touchpad.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-        });
-
-        touchpad.addEventListener('touchmove', (e) => {
-            if (!btChar) return;
-            const currentX = e.touches[0].clientX;
-            const currentY = e.touches[0].clientY;
-            const deltaX = Math.round((currentX - startX) * 0.8);
-            const deltaY = Math.round((currentY - startY) * 0.8);
-
-            if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
-                send(`MOUSE_MOVE:${deltaX},${deltaY}`);
-                startX = currentX;
-                startY = currentY;
-            }
-        });
-
-        function changeTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-        }
-
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    alert("تعذر تفعيل ملء الشاشة: " + err.message);
-                });
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-    </script>
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert("تعذر تفعيل ملء الشاشة: " + err.message);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
 </body>
 </html>
