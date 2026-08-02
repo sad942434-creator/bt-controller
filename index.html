@@ -149,6 +149,7 @@
                 <option value="purple-haze">🔮 Purple Haze</option>
             </select>
             <button class="btn-connect" onclick="connectBT()">🔗 اتصال</button>
+            <button class="btn-connect" onclick="toggleFullscreen()" style="background: var(--accent); color: #fff;">⤢ ملء الشاشة</button>
         </div>
     </header>
 
@@ -247,6 +248,18 @@
         const CHAR_UUID    = "0000ffe1-0000-1000-8000-00805f9b34fb";
         let btChar = null;
 
+
+          function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            alert("تعذر تفعيل ملء الشاشة: " + err.message);
+        });
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
         async function connectBT() {
             try {
                 const device = await navigator.bluetooth.requestDevice({
